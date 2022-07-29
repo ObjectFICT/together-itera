@@ -117,16 +117,16 @@ const MemberList: React.FC<MemberListProps> = ({ members, total, teamId, replace
                         </Tag>
                       </GridCell>
                       <GridCell type='secondary'>
-                        <Label>Mobilized</Label>
+                        <Label>Able To Work</Label>
                         <Tag
-                          color={getTagColorByCriticalBoolean(!member.isMobilized)}
-                          borderRadius={20}
+                            color={getTagColorFromCheckInCriticalBoolByMember(member, 'isAbleToWork')}
+                            borderRadius={20}
                         >
-                          {getDisplayTextFromBool(member.isMobilized)}
+                          {getDisplayTextFromCheckInBoolByMember(member, 'isAbleToWork')}
                         </Tag>
                       </GridCell>
                       <GridCell type='secondary'>
-                        <Label>Able to Relocate</Label>
+                        <Label>Able To Relocate</Label>
                         <Tag
                             color={getTagColorFromCheckInCriticalBoolByMember(member, 'isAbleToRelocate')}
                             borderRadius={20}
@@ -143,16 +143,14 @@ const MemberList: React.FC<MemberListProps> = ({ members, total, teamId, replace
                         <b>{member.name}</b>
                       </GridCell>
                       <GridCell type='primary'>
+                      </GridCell>
+                      <GridCell type='secondary'>
                         <Label>Comment</Label>
                         <span>{member.checkIn && member.checkIn.comment || 'N/A'}</span>
                       </GridCell>
                       <GridCell type='secondary'>
-                        <Label>Can Work</Label>
-                        {getDisplayTextFromCheckInBoolByMember(member, 'isAbleToWork')}
-                      </GridCell>
-                      <GridCell type='secondary'>
-                        <Label>Able To Assist</Label>
-                        {getDisplayTextFromCheckInBoolByMember(member, 'isAbleToAssist')}
+                        <Label>Mobilized</Label>
+                        {getDisplayTextFromBool(member.isMobilized)}
                       </GridCell>
                       <GridCell type='secondary'>
                         <Label>Number of People</Label>

@@ -34,13 +34,9 @@ export default function CheckIn(props: CheckInProps) {
     const [place, setPlace] = useState('');
     const [geoDisabledByUser, setGeoDisabledByUser] = useState(false);
     const [isSafeValue, setIsSafeValue] = useState('');
-    const [isAbleToAssistValue, setIsAbleToAssistValue] = useState('');
     const [isAbleToWorkValue, setIsAbleToWorkValue] = useState('');
     const [isAbleToRelocateValue, setIsAbleToRelocateValue] = useState('');
     const [safeError, setsafeError] = useState<boolean | string>(false);
-    const [ableToAssistError, setAbleToAssistError] = useState<boolean | string>(
-        false,
-    );
     const [ableToWorkError, setAbleToWorkError] = useState<boolean | string>(
         false,
     );
@@ -111,10 +107,6 @@ export default function CheckIn(props: CheckInProps) {
             setsafeError(errorMessage);
         }
 
-        if (!isAbleToAssistValue.length) {
-            setAbleToAssistError(errorMessage);
-        }
-
         if (!isAbleToWorkValue.length) {
             setAbleToWorkError(errorMessage);
         }
@@ -130,14 +122,12 @@ export default function CheckIn(props: CheckInProps) {
         if (isManualMode) {
             return !Boolean(
                 !isSafeValue.length ||
-                !isAbleToAssistValue.length ||
                 !isAbleToWorkValue.length ||
                 !isAbleToRelocateValue.length ||
                 !placeId,
             );
         } else {
             return !Boolean(!isSafeValue.length ||
-                    !isAbleToAssistValue.length ||
                     !isAbleToWorkValue.length) ||
                 !isAbleToRelocateValue;
         }
@@ -155,7 +145,6 @@ export default function CheckIn(props: CheckInProps) {
                     latitude: coords?.latitude || null,
                     longitude: coords?.longitude || null,
                     isSafe: isSafeValue === 'yes',
-                    isAbleToAssist: isAbleToAssistValue === 'yes',
                     isAbleToWork: isAbleToWorkValue === 'yes',
                     isAbleToRelocate: isAbleToRelocateValue === 'yes',
                     numberOfPeople: numberOfPeopleValue,
@@ -191,13 +180,6 @@ export default function CheckIn(props: CheckInProps) {
     const isSafeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setsafeError(false);
         setIsSafeValue(event.target.value);
-    };
-
-    const isAbleToAssistChange = (
-        event: React.ChangeEvent<HTMLSelectElement>,
-    ) => {
-        setAbleToAssistError(false);
-        setIsAbleToAssistValue(event.target.value);
     };
 
     const isAbleToWorkChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -247,7 +229,7 @@ export default function CheckIn(props: CheckInProps) {
     }
 
     function setInputLabelForRelocate() {
-        return isAbleToRelocateValue === "no" ? 'How many relatives do You need to relocate with me?' : null;
+        return isAbleToRelocateValue === "no" ? 'How many relatives do you need to relocate with you?' : null;
     }
 
     function setInputTypeForRelocate() {
@@ -375,22 +357,6 @@ export default function CheckIn(props: CheckInProps) {
                     </FormRow>
                     <FormRow>
                         <Select
-                            error={ableToAssistError}
-                            name='isAbleToAssist'
-                            label='Are you able to help with anti-war initiatives?'
-                            value={isAbleToAssistValue}
-                            selected=''
-                            onChange={isAbleToAssistChange}
-                        >
-                            <option disabled value=''>
-                                Select
-                            </option>
-                            <option value='yes'>Yes</option>
-                            <option value='no'>No</option>
-                        </Select>
-                    </FormRow>
-                    <FormRow>
-                        <Select
                             error={ableToWorkError}
                             name='isAbleToWork'
                             label='Are you able to work?'
@@ -410,7 +376,7 @@ export default function CheckIn(props: CheckInProps) {
                         <Select
                             error={ableToRelocateError}
                             name='ableRelocate'
-                            label='In a dangerous situation in my region, You can relocate to a safe place by yourself?'
+                            label='Can you relocate to a safe place by yourself in a dangerous situation in your region?'
                             value={isAbleToRelocateValue}
                             selected=''
                             onChange={isAbleToRelocateChange}

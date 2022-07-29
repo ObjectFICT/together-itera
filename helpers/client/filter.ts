@@ -52,14 +52,6 @@ export const filterMembersByCanWork = (canWork: BooleanPropString, members: Memb
   });
 };
 
-export const filterMembersByIsAbleToAssist = (isAbleToAssist: BooleanPropString, members: MemberDto[]): MemberDto[] => {
-  return filterMembersByBoolCheckInValue({
-    members,
-    value: isAbleToAssist,
-    prop: 'isAbleToAssist',
-  });
-};
-
 export const filterMembersByIsAbleToRelocate = (isAbleToRelocate: BooleanPropString, members: MemberDto[]): MemberDto[] => {
   return filterMembersByBoolCheckInValue({
     members,

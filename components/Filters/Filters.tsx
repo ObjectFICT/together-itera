@@ -23,8 +23,6 @@ interface FiltersProps {
   handleCanWorkFilter: (canWork: BooleanPropString) => void;
   filterIsMobilized: BooleanPropString;
   handleIsMobilizedFilter: (isMobilized: BooleanPropString) => void;
-  filterAbleToAssist: BooleanPropString;
-  handleAbleToAssistFilter: (isAbleToAssist: BooleanPropString) => void;
   filterAbleToRelocate: BooleanPropString;
   handleAbleToRelocateFilter: (isAbleToRelocate: BooleanPropString) => void;
   handleClearFilters: () => void;
@@ -48,8 +46,6 @@ const Filters: React.FC<FiltersProps> = ({
                                            handleIsMobilizedFilter,
                                            filterCanWork,
                                            handleCanWorkFilter,
-                                           filterAbleToAssist,
-                                           handleAbleToAssistFilter,
                                            filterAbleToRelocate,
                                            handleAbleToRelocateFilter,
                                            handleClearFilters,
@@ -91,10 +87,6 @@ const Filters: React.FC<FiltersProps> = ({
     handleIsMobilizedFilter(e.target.value as BooleanPropString);
   };
 
-  const changeAbleToAssistFilter = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    handleAbleToAssistFilter(e.target.value as BooleanPropString);
-  };
-
   const changeAbleToRelocateFilter = (e: React.ChangeEvent<HTMLSelectElement>) => {
     handleAbleToRelocateFilter(e.target.value as BooleanPropString);
   };
@@ -127,17 +119,6 @@ const Filters: React.FC<FiltersProps> = ({
           </Select>
           <Select
             scale='small'
-            label='Able To Assist'
-            value={filterAbleToAssist}
-            onChange={changeAbleToAssistFilter}
-            className={styles.select}
-          >
-            <option value='both'>All</option>
-            <option value='yes'>Yes</option>
-            <option value='no'>No</option>
-          </Select>
-          <Select
-            scale='small'
             label='Is Mobilized'
             value={filterIsMobilized}
             onChange={changeIsMobilizedFilter}
@@ -162,7 +143,7 @@ const Filters: React.FC<FiltersProps> = ({
           </Select>
           <Select
               scale='small'
-              label='Can Relocate?'
+              label='Can Relocate'
               value={filterAbleToRelocate}
               onChange={changeAbleToRelocateFilter}
               className={styles.select}

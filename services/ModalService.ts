@@ -171,7 +171,6 @@ export class ModalService implements IModalService {
           .fields(
             `${bold('Is Safe:')} ${getDisplayTextFromCheckInBoolByMember(memberDto, 'isSafe')}`,
             `${bold('Can Work:')} ${getDisplayTextFromCheckInBoolByMember(memberDto, 'isAbleToWork')}`,
-            `${bold('Can Assist:')} ${getDisplayTextFromCheckInBoolByMember(memberDto, 'isAbleToAssist')}`,
           ),
         Blocks.Section({ text: `${bold('Comment:')} ${memberDto.checkIn!.comment || 'N/A'}` }),
         Blocks.Divider(),

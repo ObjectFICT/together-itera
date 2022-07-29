@@ -11,7 +11,6 @@ type ExportableMember = {
   state: Nullable<string>;
   city: Nullable<string>;
   isSafe: Nullable<string>;
-  isAbleToAssist: Nullable<string>;
   isAbleToWork: Nullable<string>;
   isAbleToRelocate: Nullable<string>;
   isMobilized: string;
@@ -30,7 +29,6 @@ const columns: Array<keyof ExportableMember> = [
   'state',
   'city',
   'isSafe',
-  'isAbleToAssist',
   'isAbleToWork',
   'isAbleToRelocate',
   'isMobilized',
@@ -54,7 +52,6 @@ export default async (members: MemberDto[]): Promise<string> => {
     state: member.checkIn ? member.checkIn.state : 'Null',
     city: member.checkIn ? member.checkIn.city : 'Null',
     isSafe: member.checkIn ? getDisplayTextFromBool(member.checkIn.isSafe) : 'Null',
-    isAbleToAssist: member.checkIn ? getDisplayTextFromBool(member.checkIn.isAbleToAssist) : 'Null',
     isAbleToWork: member.checkIn ? getDisplayTextFromBool(member.checkIn.isAbleToWork) : 'Null',
     isAbleToRelocate: member.checkIn ? getDisplayTextFromBool(member.checkIn.isAbleToRelocate) : 'Null',
     isMobilized: getDisplayTextFromBool(member.isMobilized),

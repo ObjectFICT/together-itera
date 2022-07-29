@@ -10,7 +10,6 @@ import {
   filterMembersByLastCheckInString,
   filterMembersByIsSafe,
   filterMembersByIsMobilized,
-  filterMembersByIsAbleToAssist,
   filterMembersByIsAbleToRelocate,
   filterMembersByState,
   filterMembersByCanWork,
@@ -41,7 +40,6 @@ export default function Employees({ members, teamId }: MembersProps) {
   const [filterIsSafe, setFilterIsSafe] = useState<BooleanPropString>('both');
   const [filterIsMobilized, setFilterIsMobilized] = useState<BooleanPropString>('both');
   const [filterCanWork, setFilterCanWork] = useState<BooleanPropString>('both');
-  const [filterAbleToAssist, setFilterAbleToAssist] = useState<BooleanPropString>('both');
   const [filterAbleToRelocate, setFilterAbleToRelocate] = useState<BooleanPropString>('both');
   const [filterByCheckIn, setFilterByCheckIn] = useState<CheckInString | ''>('');
   const [filteredMembers, setFilteredMembers] = useState<MemberDto[]>(members);
@@ -53,7 +51,6 @@ export default function Employees({ members, teamId }: MembersProps) {
     setFilterIsSafe('both');
     setFilterIsMobilized('both');
     setFilterCanWork('both');
-    setFilterAbleToAssist('both');
     setFilterAbleToRelocate('both')
     setFilterByCheckIn('');
   };
@@ -101,10 +98,6 @@ export default function Employees({ members, teamId }: MembersProps) {
       filteredList = filterMembersByIsMobilized(filterIsMobilized, filteredList);
     }
 
-    if (filterAbleToAssist) {
-      filteredList = filterMembersByIsAbleToAssist(filterAbleToAssist, filteredList);
-    }
-
     if (filterAbleToRelocate) {
       filteredList = filterMembersByIsAbleToRelocate(filterAbleToRelocate, filteredList);
     }
@@ -123,7 +116,6 @@ export default function Employees({ members, teamId }: MembersProps) {
       filterIsSafe,
       filterCanWork,
       filterIsMobilized,
-      filterAbleToAssist,
       filterAbleToRelocate,
     ]);
 
@@ -161,10 +153,6 @@ export default function Employees({ members, teamId }: MembersProps) {
     setFilterIsMobilized(isMobilized);
   };
 
-  const handleAbleToAssistFilter = (isAbleToAssist: BooleanPropString) => {
-    setFilterAbleToAssist(isAbleToAssist);
-  };
-
   const handleAbleToRelocateFilter = (isAbleToRelocate: BooleanPropString) => {
     setFilterAbleToRelocate(isAbleToRelocate);
   };
@@ -190,8 +178,6 @@ export default function Employees({ members, teamId }: MembersProps) {
         handleIsSafeFilter={handleIsSafeFilter}
         filterIsMobilized={filterIsMobilized}
         handleIsMobilizedFilter={handleIsMobilizedFilter}
-        filterAbleToAssist={filterAbleToAssist}
-        handleAbleToAssistFilter={handleAbleToAssistFilter}
         filterAbleToRelocate={filterAbleToRelocate}
         handleAbleToRelocateFilter={handleAbleToRelocateFilter}
         filterCanWork={filterCanWork}

@@ -11,7 +11,6 @@ interface Payload {
   latitude: Nullable<number>;
   longitude: Nullable<number>;
   isSafe: boolean;
-  isAbleToAssist: boolean;
   isAbleToWork: boolean;
   isAbleToRelocate: boolean;
   numberOfPeople: Nullable<number>;
@@ -30,7 +29,6 @@ export default async function SubmitCheckIn(req: NextApiRequest, res: NextApiRes
       longitude,
       placeId,
       isSafe,
-      isAbleToAssist,
       isAbleToWork,
       isAbleToRelocate,
       numberOfPeople,
@@ -60,7 +58,6 @@ export default async function SubmitCheckIn(req: NextApiRequest, res: NextApiRes
       attributes: {
         ...location,
         isSafe,
-        isAbleToAssist,
         isAbleToWork,
         isAbleToRelocate,
         numberOfPeople: numberOfPeople != null ? Number(numberOfPeople) : null,

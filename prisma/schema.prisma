@@ -38,7 +38,6 @@ model CheckInRecord {
   state                 String?
   city                  String?
   isSafe                Boolean
-  isAbleToAssist        Boolean
   isAbleToWork          Boolean
   isAbleToRelocate      Boolean
   numberOfPeople        Int?
