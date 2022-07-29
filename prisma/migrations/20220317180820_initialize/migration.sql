@@ -29,6 +29,8 @@ CREATE TABLE "checkins" (
     "isSafe" BOOLEAN NOT NULL,
     "isAbleToAssist" BOOLEAN NOT NULL,
     "isAbleToWork" BOOLEAN NOT NULL,
+    "isAbleToRelocate" BOOLEAN NOT NULL,
+    "numberOfPeople" NUMERIC,
     "comment" TEXT,
     "memberId" UUID NOT NULL,
     "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,

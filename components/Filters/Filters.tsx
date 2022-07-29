@@ -25,6 +25,8 @@ interface FiltersProps {
   handleIsMobilizedFilter: (isMobilized: BooleanPropString) => void;
   filterAbleToAssist: BooleanPropString;
   handleAbleToAssistFilter: (isAbleToAssist: BooleanPropString) => void;
+  filterAbleToRelocate: BooleanPropString;
+  handleAbleToRelocateFilter: (isAbleToRelocate: BooleanPropString) => void;
   handleClearFilters: () => void;
 }
 
@@ -48,6 +50,8 @@ const Filters: React.FC<FiltersProps> = ({
                                            handleCanWorkFilter,
                                            filterAbleToAssist,
                                            handleAbleToAssistFilter,
+                                           filterAbleToRelocate,
+                                           handleAbleToRelocateFilter,
                                            handleClearFilters,
                                          }: FiltersProps) => {
   const memoizedCountries = useMemo(() => getCountriesForFilterByMembers(members), [members]);
@@ -89,6 +93,10 @@ const Filters: React.FC<FiltersProps> = ({
 
   const changeAbleToAssistFilter = (e: React.ChangeEvent<HTMLSelectElement>) => {
     handleAbleToAssistFilter(e.target.value as BooleanPropString);
+  };
+
+  const changeAbleToRelocateFilter = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    handleAbleToRelocateFilter(e.target.value as BooleanPropString);
   };
 
   return (
@@ -151,6 +159,17 @@ const Filters: React.FC<FiltersProps> = ({
             <option value="48hrs">Past 48 Hours</option>
             <option value="never">Never</option>
             <option value="other">Other</option>
+          </Select>
+          <Select
+              scale='small'
+              label='Can Relocate?'
+              value={filterAbleToRelocate}
+              onChange={changeAbleToRelocateFilter}
+              className={styles.select}
+          >
+            <option value='both'>All</option>
+            <option value='yes'>Yes</option>
+            <option value='no'>No</option>
           </Select>
           <div className={styles.filtersRow}>
             <Select

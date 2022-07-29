@@ -12,13 +12,15 @@ export interface CheckInAttributes extends RecordableEntityAttributes {
   isSafe: boolean;
   isAbleToAssist: boolean;
   isAbleToWork: boolean;
+  isAbleToRelocate: boolean;
+  numberOfPeople: Nullable<number>;
   comment: Nullable<string>;
   memberId: string;
 }
 
 export type CheckInDto = Omit<CheckInAttributes, 'createdAt' | 'updatedAt'> & SerializableTimestamps;
 
-export type ProtectedCheckInDto = Omit<CheckInDto, 'isSafe' | 'isAbleToAssist' | 'isAbleToWork' | 'comment'>;
+export type ProtectedCheckInDto = Omit<CheckInDto, 'isSafe' | 'isAbleToAssist' | 'isAbleToWork' | 'isAbleToRelocate' | 'numberOfPeople' | 'comment'>;
 
 export class CheckIn extends RecordableEntity implements IDtoable<CheckInDto>, IProtectedDtoable<ProtectedCheckInDto> {
   public readonly latitude: Nullable<number>;
@@ -29,6 +31,8 @@ export class CheckIn extends RecordableEntity implements IDtoable<CheckInDto>, I
   public readonly isSafe: boolean;
   public readonly isAbleToAssist: boolean;
   public readonly isAbleToWork: boolean;
+  public readonly isAbleToRelocate: boolean;
+  public readonly numberOfPeople: Nullable<number>;
   public readonly comment: Nullable<string>;
   public readonly memberId: string;
 
@@ -43,6 +47,8 @@ export class CheckIn extends RecordableEntity implements IDtoable<CheckInDto>, I
     this.isSafe = params.isSafe;
     this.isAbleToAssist = params.isAbleToAssist;
     this.isAbleToWork = params.isAbleToWork;
+    this.isAbleToRelocate = params.isAbleToRelocate;
+    this.numberOfPeople = params.numberOfPeople;
     this.comment = params.comment;
     this.memberId = params.memberId
   }
@@ -59,6 +65,8 @@ export class CheckIn extends RecordableEntity implements IDtoable<CheckInDto>, I
       isSafe,
       isAbleToWork,
       isAbleToAssist,
+      isAbleToRelocate,
+      numberOfPeople,
       comment,
       ...rest
     } = this;

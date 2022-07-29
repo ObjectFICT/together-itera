@@ -125,6 +125,15 @@ const MemberList: React.FC<MemberListProps> = ({ members, total, teamId, replace
                           {getDisplayTextFromBool(member.isMobilized)}
                         </Tag>
                       </GridCell>
+                      <GridCell type='secondary'>
+                        <Label>Able to Relocate</Label>
+                        <Tag
+                            color={getTagColorFromCheckInCriticalBoolByMember(member, 'isAbleToRelocate')}
+                            borderRadius={20}
+                        >
+                          {getDisplayTextFromCheckInBoolByMember(member, 'isAbleToRelocate')}
+                        </Tag>
+                      </GridCell>
                     </GridRow>
                   </AccordionTrigger>
                   <AccordionCollapsible sectionKey={member.id}>
@@ -146,6 +155,8 @@ const MemberList: React.FC<MemberListProps> = ({ members, total, teamId, replace
                         {getDisplayTextFromCheckInBoolByMember(member, 'isAbleToAssist')}
                       </GridCell>
                       <GridCell type='secondary'>
+                        <Label>Number of People</Label>
+                        <span>{member.checkIn && member.checkIn.numberOfPeople || 0}</span>
                       </GridCell>
                     </GridRow>
                     <GridRow>
