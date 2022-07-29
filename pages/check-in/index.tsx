@@ -43,7 +43,7 @@ export default function CheckIn(props: CheckInProps) {
     const [ableToRelocateError, setAbleToRelocateError] = useState<boolean | string>(
         false,
     );
-    const [numberOfPeopleValue, setNumberOfPeopleValue] = useState(0);
+    const [numberOfPeopleToRelocateValue, setNumberOfPeopleToRelocateValue] = useState(0);
     const [commentValue, setCommentValue] = useState('');
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -147,7 +147,7 @@ export default function CheckIn(props: CheckInProps) {
                     isSafe: isSafeValue === 'yes',
                     isAbleToWork: isAbleToWorkValue === 'yes',
                     isAbleToRelocate: isAbleToRelocateValue === 'yes',
-                    numberOfPeople: numberOfPeopleValue,
+                    numberOfPeopleToRelocate: numberOfPeopleToRelocateValue,
                     comment: commentValue,
                     placeId: placeId || null,
                 })
@@ -196,8 +196,8 @@ export default function CheckIn(props: CheckInProps) {
         setCommentValue(value as string);
     };
 
-    const numberOfPeopleChange = (value: InputValueType) => {
-        setNumberOfPeopleValue(value as number);
+    const numberOfPeopleToRelocateChange = (value: InputValueType) => {
+        setNumberOfPeopleToRelocateValue(value as number);
     };
 
     if (!memberId || !checkInToken) {
@@ -392,9 +392,9 @@ export default function CheckIn(props: CheckInProps) {
                         <Input
                             type={setInputTypeForRelocate()}
                             min={1}
-                            value={numberOfPeopleValue}
-                            onChange={numberOfPeopleChange}
-                            name='numberOfPeople'
+                            value={numberOfPeopleToRelocateValue}
+                            onChange={numberOfPeopleToRelocateChange}
+                            name='numberOfPeopleToRelocate'
                             label={setInputLabelForRelocate()}
                         />
                     </FormRow>

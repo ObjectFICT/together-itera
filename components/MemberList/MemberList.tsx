@@ -153,8 +153,8 @@ const MemberList: React.FC<MemberListProps> = ({ members, total, teamId, replace
                         {getDisplayTextFromBool(member.isMobilized)}
                       </GridCell>
                       <GridCell type='secondary'>
-                        <Label>Number of People</Label>
-                        <span>{member.checkIn && member.checkIn.numberOfPeople || 0}</span>
+                        <Label>Number Of People To Relocate</Label>
+                        <span>{member.checkIn && member.checkIn.numberOfPeopleToRelocate || 0}</span>
                       </GridCell>
                     </GridRow>
                     <GridRow>

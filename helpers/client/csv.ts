@@ -17,7 +17,7 @@ type ExportableMember = {
   isAdmin: Nullable<string>;
   isExemptFromCheckIn: Nullable<string>;
   isOptedOutOfMap: Nullable<string>;
-  numberOfPeople: Nullable<number>;
+  numberOfPeopleToRelocate: Nullable<number>;
   comment: Nullable<string>;
   lastCheckedIn: Nullable<string>;
 }
@@ -35,7 +35,7 @@ const columns: Array<keyof ExportableMember> = [
   'isAdmin',
   'isExemptFromCheckIn',
   'isOptedOutOfMap',
-  'numberOfPeople',
+  'numberOfPeopleToRelocate',
   'comment',
   'lastCheckedIn',
 ];
@@ -58,7 +58,7 @@ export default async (members: MemberDto[]): Promise<string> => {
     isAdmin: getDisplayTextFromBool(member.isAdmin),
     isExemptFromCheckIn: getDisplayTextFromBool(member.isExemptFromCheckIn),
     isOptedOutOfMap: getDisplayTextFromBool(member.isOptedOutOfMap),
-    numberOfPeople: member.checkIn ? member.checkIn.numberOfPeople : null,
+    numberOfPeopleToRelocate: member.checkIn ? member.checkIn.numberOfPeopleToRelocate : null,
     comment: member.checkIn ? member.checkIn.comment : 'Null',
     lastCheckedIn: member.checkIn ? member.checkIn.createdAt : 'Null',
   }));
