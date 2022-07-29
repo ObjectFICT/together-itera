@@ -11,6 +11,7 @@ import {
   filterMembersByIsSafe,
   filterMembersByIsMobilized,
   filterMembersByIsAbleToAssist,
+  filterMembersByIsAbleToRelocate,
   filterMembersByState,
   filterMembersByCanWork,
   getCitiesForFiltersByCountryOrState,
@@ -41,6 +42,7 @@ export default function Employees({ members, teamId }: MembersProps) {
   const [filterIsMobilized, setFilterIsMobilized] = useState<BooleanPropString>('both');
   const [filterCanWork, setFilterCanWork] = useState<BooleanPropString>('both');
   const [filterAbleToAssist, setFilterAbleToAssist] = useState<BooleanPropString>('both');
+  const [filterAbleToRelocate, setFilterAbleToRelocate] = useState<BooleanPropString>('both');
   const [filterByCheckIn, setFilterByCheckIn] = useState<CheckInString | ''>('');
   const [filteredMembers, setFilteredMembers] = useState<MemberDto[]>(members);
 
@@ -52,6 +54,7 @@ export default function Employees({ members, teamId }: MembersProps) {
     setFilterIsMobilized('both');
     setFilterCanWork('both');
     setFilterAbleToAssist('both');
+    setFilterAbleToRelocate('both')
     setFilterByCheckIn('');
   };
 
@@ -102,6 +105,10 @@ export default function Employees({ members, teamId }: MembersProps) {
       filteredList = filterMembersByIsAbleToAssist(filterAbleToAssist, filteredList);
     }
 
+    if (filterAbleToRelocate) {
+      filteredList = filterMembersByIsAbleToRelocate(filterAbleToRelocate, filteredList);
+    }
+
     return filteredList;
   };
 
@@ -117,6 +124,7 @@ export default function Employees({ members, teamId }: MembersProps) {
       filterCanWork,
       filterIsMobilized,
       filterAbleToAssist,
+      filterAbleToRelocate,
     ]);
 
   const handleCountryFilter = (country: string) => {
@@ -157,6 +165,10 @@ export default function Employees({ members, teamId }: MembersProps) {
     setFilterAbleToAssist(isAbleToAssist);
   };
 
+  const handleAbleToRelocateFilter = (isAbleToRelocate: BooleanPropString) => {
+    setFilterAbleToRelocate(isAbleToRelocate);
+  };
+
   const memoizedStates = useMemo(() => getStatesForFiltersByCountry(filterByCountry, upToDateMembers), [filterByCountry]);
   const memoizedCities = useMemo(() => getCitiesForFiltersByCountryOrState(filterByCountry, filterByState, upToDateMembers), [filterByCountry, filterByState]);
 
@@ -180,6 +192,8 @@ export default function Employees({ members, teamId }: MembersProps) {
         handleIsMobilizedFilter={handleIsMobilizedFilter}
         filterAbleToAssist={filterAbleToAssist}
         handleAbleToAssistFilter={handleAbleToAssistFilter}
+        filterAbleToRelocate={filterAbleToRelocate}
+        handleAbleToRelocateFilter={handleAbleToRelocateFilter}
         filterCanWork={filterCanWork}
         handleCanWorkFilter={handleCanWorkFilter}
         handleClearFilters={handleClearFilters}

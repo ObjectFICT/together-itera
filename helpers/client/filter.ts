@@ -60,6 +60,14 @@ export const filterMembersByIsAbleToAssist = (isAbleToAssist: BooleanPropString,
   });
 };
 
+export const filterMembersByIsAbleToRelocate = (isAbleToRelocate: BooleanPropString, members: MemberDto[]): MemberDto[] => {
+  return filterMembersByBoolCheckInValue({
+    members,
+    value: isAbleToRelocate,
+    prop: 'isAbleToRelocate',
+  });
+};
+
 type FilterMemberByBoolCheckInValueParams = {
   value: BooleanPropString;
   prop: keyof CheckInDto;

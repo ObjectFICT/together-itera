@@ -40,6 +40,8 @@ model CheckInRecord {
   isSafe                Boolean
   isAbleToAssist        Boolean
   isAbleToWork          Boolean
+  isAbleToRelocate      Boolean
+  numberOfPeople        Int?
   comment               String?
   memberId              String          @Db.Uuid
   createdAt             DateTime?       @default(now())
