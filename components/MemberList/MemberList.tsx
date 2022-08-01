@@ -95,7 +95,7 @@ const MemberList: React.FC<MemberListProps> = ({ members, total, teamId, replace
                           color={getCountryTagColorByMember(member)}
                           borderRadius={20}
                         >
-                          {getShortLocationStringByMember(member)}
+                          {getLocationStringByMember(member)}
                         </Tag>
                       </GridCell>
                       <GridCell type='secondary'>
