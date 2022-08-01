@@ -13,6 +13,7 @@ import {
   filterMembersByIsAbleToRelocate,
   filterMembersByState,
   filterMembersByCanWork,
+  filterMembersByIsExemptFromCheckIn,
   getCitiesForFiltersByCountryOrState,
   getStatesForFiltersByCountry,
   sortMembersByEmailAsc,
@@ -41,6 +42,7 @@ export default function Employees({ members, teamId }: MembersProps) {
   const [filterIsMobilized, setFilterIsMobilized] = useState<BooleanPropString>('both');
   const [filterCanWork, setFilterCanWork] = useState<BooleanPropString>('both');
   const [filterAbleToRelocate, setFilterAbleToRelocate] = useState<BooleanPropString>('both');
+  const [filterIsExemptFromCheckIn, setFilterIsExemptFromCheckIn] = useState<BooleanPropString>('both');
   const [filterByCheckIn, setFilterByCheckIn] = useState<CheckInString | ''>('');
   const [filteredMembers, setFilteredMembers] = useState<MemberDto[]>(members);
 
@@ -51,7 +53,8 @@ export default function Employees({ members, teamId }: MembersProps) {
     setFilterIsSafe('both');
     setFilterIsMobilized('both');
     setFilterCanWork('both');
-    setFilterAbleToRelocate('both')
+    setFilterAbleToRelocate('both');
+    setFilterIsExemptFromCheckIn('both');
     setFilterByCheckIn('');
   };
 
@@ -102,6 +105,10 @@ export default function Employees({ members, teamId }: MembersProps) {
       filteredList = filterMembersByIsAbleToRelocate(filterAbleToRelocate, filteredList);
     }
 
+    if (filterIsExemptFromCheckIn) {
+        filteredList = filterMembersByIsExemptFromCheckIn(filterIsExemptFromCheckIn, filteredList);
+    }
+
     return filteredList;
   };
 
@@ -117,6 +124,7 @@ export default function Employees({ members, teamId }: MembersProps) {
       filterCanWork,
       filterIsMobilized,
       filterAbleToRelocate,
+      filterIsExemptFromCheckIn
     ]);
 
   const handleCountryFilter = (country: string) => {
@@ -157,6 +165,11 @@ export default function Employees({ members, teamId }: MembersProps) {
     setFilterAbleToRelocate(isAbleToRelocate);
   };
 
+  const handleIsExemptFromCheckInFilter = (IsExemptFromCheckIn: BooleanPropString) => {
+    setFilterIsExemptFromCheckIn(IsExemptFromCheckIn);
+  };
+
+
   const memoizedStates = useMemo(() => getStatesForFiltersByCountry(filterByCountry, upToDateMembers), [filterByCountry]);
   const memoizedCities = useMemo(() => getCitiesForFiltersByCountryOrState(filterByCountry, filterByState, upToDateMembers), [filterByCountry, filterByState]);
 
@@ -182,6 +195,8 @@ export default function Employees({ members, teamId }: MembersProps) {
         handleAbleToRelocateFilter={handleAbleToRelocateFilter}
         filterCanWork={filterCanWork}
         handleCanWorkFilter={handleCanWorkFilter}
+        filterIsExemptFromCheckIn={filterIsExemptFromCheckIn}
+        handleIsExemptFromCheckInFilter={handleIsExemptFromCheckInFilter}
         handleClearFilters={handleClearFilters}
       />
       <Search/>

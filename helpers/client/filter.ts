@@ -87,6 +87,14 @@ export const filterMembersByIsMobilized = (isMobilized: BooleanPropString, membe
   });
 };
 
+export const filterMembersByIsExemptFromCheckIn = (IsExemptFromCheckIn: BooleanPropString, members: MemberDto[]): MemberDto[] => {
+  return filterMembersByBoolValue({
+    members,
+    value: IsExemptFromCheckIn,
+    prop: 'isExemptFromCheckIn',
+  });
+};
+
 type FilterMemberByBoolValueParams = {
   value: BooleanPropString;
   prop: keyof MemberDto;
