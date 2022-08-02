@@ -1,4 +1,4 @@
-import { checkInIsWithin24Hours, checkInIsCloserTo48HoursAgo } from './date';
+import { checkInIsWithinCurrentWeek, checkInIsCloserLastWeek } from './date';
 
 import type { CheckInDto, MemberDto } from '../../entities';
 import type { CheckInString, BooleanPropString } from '../../types';
@@ -17,16 +17,16 @@ export const filterMembersByCity = (cityQuery: string, members: MemberDto[]): Me
 
 export const filterMembersByLastCheckInString = (query: CheckInString, members: MemberDto[]) => {
   switch (query) {
-    case '24hrs':
-      return members.filter((member) => checkInIsWithin24Hours(member.checkIn));
-    case '48hrs':
-      return members.filter((member) => checkInIsCloserTo48HoursAgo(member.checkIn));
+    case 'current_week':
+      return members.filter((member) => checkInIsWithinCurrentWeek(member.checkIn));
+    case 'last_week':
+      return members.filter((member) => checkInIsCloserLastWeek(member.checkIn));
     case 'never':
       return members.filter((member) => member.checkIn === null);
     case 'other':
       return members.filter((member) => {
-        const isToday = checkInIsWithin24Hours(member.checkIn);
-        const isYesterday = checkInIsCloserTo48HoursAgo(member.checkIn);
+        const isToday = checkInIsWithinCurrentWeek(member.checkIn);
+        const isYesterday = checkInIsCloserLastWeek(member.checkIn);
         const isNull = member.checkIn === null;
 
         return Boolean(!isToday && !isYesterday && !isNull);
@@ -84,6 +84,14 @@ export const filterMembersByIsMobilized = (isMobilized: BooleanPropString, membe
     members,
     value: isMobilized,
     prop: 'isMobilized',
+  });
+};
+
+export const filterMembersByIsExemptFromCheckIn = (IsExemptFromCheckIn: BooleanPropString, members: MemberDto[]): MemberDto[] => {
+  return filterMembersByBoolValue({
+    members,
+    value: IsExemptFromCheckIn,
+    prop: 'isExemptFromCheckIn',
   });
 };
 

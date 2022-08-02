@@ -25,6 +25,8 @@ interface FiltersProps {
   handleIsMobilizedFilter: (isMobilized: BooleanPropString) => void;
   filterAbleToRelocate: BooleanPropString;
   handleAbleToRelocateFilter: (isAbleToRelocate: BooleanPropString) => void;
+  filterIsExemptFromCheckIn: BooleanPropString;
+  handleIsExemptFromCheckInFilter: (isExemptFromCheckIn: BooleanPropString) => void;
   handleClearFilters: () => void;
 }
 
@@ -48,6 +50,8 @@ const Filters: React.FC<FiltersProps> = ({
                                            handleCanWorkFilter,
                                            filterAbleToRelocate,
                                            handleAbleToRelocateFilter,
+                                           filterIsExemptFromCheckIn,
+                                           handleIsExemptFromCheckInFilter,
                                            handleClearFilters,
                                          }: FiltersProps) => {
   const memoizedCountries = useMemo(() => getCountriesForFilterByMembers(members), [members]);
@@ -89,6 +93,10 @@ const Filters: React.FC<FiltersProps> = ({
 
   const changeAbleToRelocateFilter = (e: React.ChangeEvent<HTMLSelectElement>) => {
     handleAbleToRelocateFilter(e.target.value as BooleanPropString);
+  };
+
+  const changeIsExemptFromCheckInFilter = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    handleIsExemptFromCheckInFilter(e.target.value as BooleanPropString);
   };
 
   return (
@@ -136,8 +144,8 @@ const Filters: React.FC<FiltersProps> = ({
             className={styles.select}
           >
             <option value=''>All</option>
-            <option value="24hrs">Past 24 Hours</option>
-            <option value="48hrs">Past 48 Hours</option>
+            <option value="current_week">In This Week</option>
+            <option value="last_week">Last Week</option>
             <option value="never">Never</option>
             <option value="other">Other</option>
           </Select>
@@ -152,6 +160,18 @@ const Filters: React.FC<FiltersProps> = ({
             <option value='yes'>Yes</option>
             <option value='no'>No</option>
           </Select>
+          <Select
+              scale='small'
+              label='Exempt From Check In'
+              value={filterIsExemptFromCheckIn}
+              onChange={changeIsExemptFromCheckInFilter}
+              className={styles.select}
+          >
+            <option value='both'>All</option>
+            <option value='yes'>Yes</option>
+            <option value='no'>No</option>
+          </Select>
+
           <div className={styles.filtersRow}>
             <Select
               scale='small'
