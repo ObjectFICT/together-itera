@@ -1,54 +1,58 @@
-import { ProtectedCheckInDto } from '../../entities';
-import { isAfter, isBefore, subDays, subHours } from 'date-fns';
+import {ProtectedCheckInDto} from '../../entities';
+import {isAfter, isBefore, subHours, addDays} from 'date-fns';
 
-import type { Nullable } from '../../types';
+import type {Nullable} from '../../types';
 
-export const checkInIsWithin24Hours = <T extends ProtectedCheckInDto>(checkIn: Nullable<T>): boolean => {
-  if (!checkIn) {
-    return false;
-  }
+export const checkInIsWithinCurrentWeek = <T extends ProtectedCheckInDto>(checkIn: Nullable<T>): boolean => {
+    if (!checkIn) {
+        return false;
+    }
 
-  const date = new Date(checkIn.createdAt as unknown as string);
+    const date = new Date(checkIn.createdAt as unknown as string);
 
-  return isWithin24Hours(date);
+    return isWithinCurrentWeek(date);
 };
 
-export const isWithin24Hours = (date: Nullable<Date>): boolean => {
-  return isWithinNHours(date, 24);
+export const isWithinCurrentWeek = (date: Nullable<Date>): boolean => {
+    return isWithinNHours(date, 168);
 }
 
 export const isWithinNHours = (date: Nullable<Date>, hours: number): boolean => {
-  if (!date) {
-    return false;
-  }
+    if (!date) {
+        return false;
+    }
 
-  const now = convertDateToUTC(new Date());
-  const dateUTC = convertDateToUTC(date);
-  const dateNHoursAgo = subHours(now, hours);
+    const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
+    const firstDay = currentDate.getDate() - currentDate.getDay() + 1;
+    const lastDayWeek = new Date(currentDate.setDate(firstDay + 6));
 
-  return isAfter(dateUTC, dateNHoursAgo);
+    const dateUTC = convertDateToUTC(date);
+    const dateNHoursAgo = convertDateToUTC(subHours(lastDayWeek, hours));
+
+    return isAfter(dateUTC, dateNHoursAgo);
 }
 
-export const checkInIsCloserTo48HoursAgo = <T extends ProtectedCheckInDto>(checkIn: Nullable<T>): boolean => {
-  if (!checkIn) {
-    return false;
-  }
+export const checkInIsCloserLastWeek = <T extends ProtectedCheckInDto>(checkIn: Nullable<T>): boolean => {
+    if (!checkIn) {
+        return false;
+    }
 
-  const date = new Date(checkIn.createdAt as unknown as string);
-  const dateLocal = new Date();
-  const dateUTC = convertDateToUTC(dateLocal);
+    const date = new Date(checkIn.createdAt as unknown as string);
+    const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
+    const firstDay = currentDate.getDate() - currentDate.getDay() - 6;
+    const lastWeekFirstDay = new Date(currentDate.setDate(firstDay));
+    const lastWeekLastDay = addDays(lastWeekFirstDay, 7);
 
-  const date48HoursAgo = subDays(dateUTC, 2);
-  const date24HoursAgo = subDays(dateUTC, 1);
-
-  return Boolean(isAfter(date, date48HoursAgo) && isBefore(date, date24HoursAgo));
+    return Boolean(isAfter(date, lastWeekFirstDay) && isBefore(date, lastWeekLastDay));
 };
 
 export const convertDateToUTC = (date: Date) => Date.UTC(
-  date.getUTCFullYear(),
-  date.getUTCMonth(),
-  date.getUTCDate(),
-  date.getUTCHours(),
-  date.getUTCMinutes(),
-  date.getUTCSeconds(),
+    date.getUTCFullYear(),
+    date.getUTCMonth(),
+    date.getUTCDate(),
+    date.getUTCHours(),
+    date.getUTCMinutes(),
+    date.getUTCSeconds(),
 );

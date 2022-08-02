@@ -7,7 +7,7 @@ export type Nullable<T> = T | null;
 
 export type ObjectLiteral = Record<string, any>;
 
-export type CheckInString = '24hrs' | '48hrs' | 'never' | 'other';
+export type CheckInString = 'current_week' | 'last_week' | 'never' | 'other';
 
 export type BooleanPropString = 'yes' | 'no' | 'both';
 

@@ -144,8 +144,8 @@ const Filters: React.FC<FiltersProps> = ({
             className={styles.select}
           >
             <option value=''>All</option>
-            <option value="24hrs">Past 24 Hours</option>
-            <option value="48hrs">Past 48 Hours</option>
+            <option value="current_week">In This Week</option>
+            <option value="last_week">Last Week</option>
             <option value="never">Never</option>
             <option value="other">Other</option>
           </Select>
