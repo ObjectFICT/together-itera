@@ -43,7 +43,7 @@ const MemberList: React.FC<MemberListProps> = ({members, total, teamId, replaceM
     const filteredList = query ? findMembersByQuery(query, members) : members;
 
     const checkedInWithin24Hours = useMemo(() => {
-        return filterMembersByLastCheckInString('current_week', filteredList);
+        return filterMembersByLastCheckInString('short', filteredList);
     }, [filteredList]);
 
     return (

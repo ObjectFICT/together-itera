@@ -1,7 +1,8 @@
-import {format} from 'date-fns';
-import {checkInIsWithinCurrentWeek, checkInIsCloserLastWeek} from './date';
+import {format, isAfter, subHours} from 'date-fns';
+import {checkInIsCloserPerShortTime, checkInIsCloserPerLongTime, convertDateToUTC} from './date';
 import type {CheckInDto, MemberDto, AnyMemberDto} from '../../entities';
 import type {Nullable, TagColor} from '../../types';
+import {TYPE_APP} from "../../config/custom/app-config";
 
 type NullableStringArray = Array<string | null>;
 
@@ -50,11 +51,11 @@ export const getLastCheckInTagColorByMember = (member: AnyMemberDto): TagColor =
         return 'warning';
     }
 
-    if (checkInIsCloserLastWeek(member.checkIn)) {
+    if (checkInIsCloserPerLongTime(member.checkIn)) {
         return 'custom';
     }
 
-    if (checkInIsWithinCurrentWeek(member.checkIn)) {
+    if (checkInIsCloserPerShortTime(member.checkIn)) {
         return 'primary';
     }
 
@@ -68,12 +69,37 @@ export const getLastCheckInStringByMember = (member: AnyMemberDto): string => {
 
     const date = new Date(member.checkIn.createdAt as unknown as string);
 
-    if (checkInIsCloserLastWeek(member.checkIn)) {
-        return 'Last Week';
+    if (checkInIsCloserPerLongTime(member.checkIn)) {
+        switch (TYPE_APP) {
+            // @ts-ignore
+            case 1:
+                return "Past 48 Hours"
+            //@ts-ignore
+            case 2:
+                return 'Last Week';
+            //@ts-ignore
+            case 3:
+                return 'Last Month';
+            default:
+                break;
+        }
+
     }
 
-    if (checkInIsWithinCurrentWeek(member.checkIn)) {
-        return 'Current Week';
+    if (checkInIsCloserPerShortTime(member.checkIn)) {
+        switch (TYPE_APP) {
+            // @ts-ignore
+            case 1:
+                return "Past 24 Hours";
+            //@ts-ignore
+            case 2:
+                return "Current Week";
+            //@ts-ignore
+            case 3:
+                return "Current Month";
+            default:
+                break;
+        }
     }
 
     return format(date, 'MMMM do');
