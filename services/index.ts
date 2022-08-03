@@ -27,7 +27,7 @@ import {
     checkInRequestRule,
 } from '../config';
 import {ModalService} from './ModalService';
-import {isWithinCurrentWeek} from '../helpers/client';
+import {isWithinShortTimePeriod} from '../helpers/client';
 
 import type {Member} from '../entities';
 
@@ -84,7 +84,7 @@ export const memberService = new MemberService({
     memberIsAtRisk: memberIsAtRiskRule || ((member: Member): boolean => {
         const isSafe = member.checkIn && member.checkIn.isSafe;
         const isNotMobilized = !member.isMobilized;
-        const hasCheckedInRecently = member.checkIn && isWithinCurrentWeek(member.checkIn.createdAt);
+        const hasCheckedInRecently = member.checkIn && isWithinShortTimePeriod(member.checkIn.createdAt);
 
         return !Boolean(isSafe && isNotMobilized && hasCheckedInRecently);
     }),
