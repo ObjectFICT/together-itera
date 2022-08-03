@@ -152,10 +152,15 @@ export class MessageService implements IMessageService {
             text: 'Repeat Last Check In',
             actionId: SlackAction.RenderRepeatCheckInConfirmation,
           }),
+          /*
+
+          Add if you want to see "check in someone else" button
+
           Elements.Button({
             text: 'Check In Another Employee',
             actionId: SlackAction.RenderCheckInOtherMemberConfirmation,
           }),
+           */
         ),
     ]
   }

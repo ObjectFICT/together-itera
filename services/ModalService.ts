@@ -62,10 +62,15 @@ export class ModalService implements IModalService {
               text: 'Repeat Last Check In',
               actionId: SlackAction.RenderRepeatCheckInConfirmation,
             }),
+            /*
+
+            Add if you want to see "check in someone else" button
+
             Elements.Button({
               text: 'Check In Someone Else',
               actionId: SlackAction.RenderCheckInOtherMemberConfirmation,
             }),
+            */
           ),
         Blocks.Divider(),
         Blocks.Section({ text: bold('Visit The Web App') }),
