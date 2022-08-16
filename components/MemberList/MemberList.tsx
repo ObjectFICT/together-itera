@@ -28,6 +28,8 @@ import MemberActions from './MemberActions/MemberActions';
 import styles from './MemberList.module.sass';
 import DownloadCSV from '../DownloadCSV/DownloadCSV';
 import type {MemberDto} from '../../entities';
+import {Nullable} from "../../types";
+import {supportValues} from "../Filters/Filters";
 
 interface MemberListProps {
     teamId: string;
@@ -45,6 +47,24 @@ const MemberList: React.FC<MemberListProps> = ({members, total, teamId, replaceM
     const checkedInWithin24Hours = useMemo(() => {
         return filterMembersByLastCheckInString('short', filteredList);
     }, [filteredList]);
+
+    function displayTextSupport(support: Nullable<string>) {
+        if (support == null) {
+            return false;
+        }
+        switch (support) {
+            case "1":
+                return supportValues[0];
+            case "2":
+                return supportValues[1];
+            case "3":
+                return supportValues[2];
+            case "4":
+                return supportValues[3];
+            default:
+                return false;
+        }
+    }
 
     return (
         <>
@@ -99,6 +119,8 @@ const MemberList: React.FC<MemberListProps> = ({members, total, teamId, replaceM
                                                 </Tag>
                                             </GridCell>
                                             <GridCell type='secondary'>
+                                            </GridCell>
+                                            <GridCell type='secondary'>
                                                 <Label>Last Check In</Label>
                                                 <Tag
                                                     color={getLastCheckInTagColorByMember(member)}
@@ -125,18 +147,27 @@ const MemberList: React.FC<MemberListProps> = ({members, total, teamId, replaceM
                                                     {getDisplayTextFromCheckInBoolByMember(member, 'isAbleToWork')}
                                                 </Tag>
                                             </GridCell>
-                                            <GridCell type='secondary'>
-                                                <Label>Able To Relocate</Label>
-                                                <Tag
-                                                    color={getTagColorFromCheckInCriticalBoolByMember(member, 'isAbleToRelocate')}
-                                                    borderRadius={20}
-                                                >
-                                                    {getDisplayTextFromCheckInBoolByMember(member, 'isAbleToRelocate')}
-                                                </Tag>
-                                            </GridCell>
                                         </GridRow>
                                     </AccordionTrigger>
                                     <AccordionCollapsible sectionKey={member.id}>
+                                        <GridRow>
+                                            <GridCell type='primary'>
+                                            </GridCell>
+                                            <GridCell type='primary'>
+                                            </GridCell>
+                                            <GridCell type='secondary'>
+                                                <Label>Company support</Label>
+                                                <span>{member.checkIn && displayTextSupport(member.checkIn.support) || 'N/A'}</span>
+                                            </GridCell>
+                                            <GridCell type='secondary'>
+                                                <Label>Other (provide comment)</Label>
+                                                <span>{member.checkIn && member.checkIn.otherSupport || 'N/A'}</span>
+                                            </GridCell>
+                                            <GridCell type='secondary'>
+                                                <Label>Number Of People To Relocate</Label>
+                                                <span>{member.checkIn && member.checkIn.numberOfPeopleToRelocate || 0}</span>
+                                            </GridCell>
+                                        </GridRow>
                                         <GridRow>
                                             <GridCell type='primary'>
                                                 <Label>Name</Label>
@@ -153,8 +184,6 @@ const MemberList: React.FC<MemberListProps> = ({members, total, teamId, replaceM
                                                 {getDisplayTextFromBool(member.isMobilized)}
                                             </GridCell>
                                             <GridCell type='secondary'>
-                                                <Label>Number Of People To Relocate</Label>
-                                                <span>{member.checkIn && member.checkIn.numberOfPeopleToRelocate || 0}</span>
                                             </GridCell>
                                         </GridRow>
                                         <GridRow>

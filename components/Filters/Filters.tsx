@@ -13,6 +13,12 @@ import {
     option_current_month, option_last_month
 } from "../../config/custom/app-config";
 
+export const supportValues = [
+    'I don\'t need any help',
+    'Help only with a request for accommodation at the time of temporary relocation',
+    'Organize temporary relocation (2-4 days), including transportation',
+    'Other (provide comment)'
+]
 
 interface FiltersProps {
     members: MemberDto[];
@@ -32,8 +38,8 @@ interface FiltersProps {
     handleCanWorkFilter: (canWork: BooleanPropString) => void;
     filterIsMobilized: BooleanPropString;
     handleIsMobilizedFilter: (isMobilized: BooleanPropString) => void;
-    filterAbleToRelocate: BooleanPropString;
-    handleAbleToRelocateFilter: (isAbleToRelocate: BooleanPropString) => void;
+    filterSupport: string;
+    handleFilterSupport: (support: string) => void;
     filterIsExemptFromCheckIn: BooleanPropString;
     handleIsExemptFromCheckInFilter: (isExemptFromCheckIn: BooleanPropString) => void;
     handleClearFilters: () => void;
@@ -57,8 +63,8 @@ const Filters: React.FC<FiltersProps> = ({
                                              handleIsMobilizedFilter,
                                              filterCanWork,
                                              handleCanWorkFilter,
-                                             filterAbleToRelocate,
-                                             handleAbleToRelocateFilter,
+                                             filterSupport,
+                                             handleFilterSupport,
                                              filterIsExemptFromCheckIn,
                                              handleIsExemptFromCheckInFilter,
                                              handleClearFilters,
@@ -100,8 +106,8 @@ const Filters: React.FC<FiltersProps> = ({
         handleIsMobilizedFilter(e.target.value as BooleanPropString);
     };
 
-    const changeAbleToRelocateFilter = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        handleAbleToRelocateFilter(e.target.value as BooleanPropString);
+    const changeSupportFilter = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        handleFilterSupport(e.target.value as string);
     };
 
     const changeIsExemptFromCheckInFilter = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -192,14 +198,16 @@ const Filters: React.FC<FiltersProps> = ({
                     </Select>
                     <Select
                         scale='small'
-                        label='Can Relocate'
-                        value={filterAbleToRelocate}
-                        onChange={changeAbleToRelocateFilter}
+                        label='Company support'
+                        value={filterSupport}
+                        onChange={changeSupportFilter}
                         className={styles.select}
                     >
-                        <option value='both'>All</option>
-                        <option value='yes'>Yes</option>
-                        <option value='no'>No</option>
+                        <option value=''>All</option>
+                        <option value='1'>{supportValues[0]}</option>
+                        <option value='2'>{supportValues[1]}</option>
+                        <option value='3'>{supportValues[2]}</option>
+                        <option value='4'>{supportValues[3]}</option>
                     </Select>
                     <Select
                         scale='small'
