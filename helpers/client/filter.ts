@@ -52,14 +52,6 @@ export const filterMembersByCanWork = (canWork: BooleanPropString, members: Memb
     });
 };
 
-export const filterMembersByIsAbleToRelocate = (isAbleToRelocate: BooleanPropString, members: MemberDto[]): MemberDto[] => {
-    return filterMembersByBoolCheckInValue({
-        members,
-        value: isAbleToRelocate,
-        prop: 'isAbleToRelocate',
-    });
-};
-
 type FilterMemberByBoolCheckInValueParams = {
     value: BooleanPropString;
     prop: keyof CheckInDto;
@@ -76,6 +68,21 @@ const filterMembersByBoolCheckInValue = ({value, prop, members}: FilterMemberByB
             return members;
         default:
             return members;
+    }
+};
+
+export const filterMembersBySupport = (support: string, members: MemberDto[]): MemberDto[] => {
+    switch (support) {
+        case '1':
+            return members.filter((member) => member.checkIn && member.checkIn.support === '1')
+        case '2':
+            return members.filter((member) => member.checkIn && member.checkIn.support === '2')
+        case '3':
+            return members.filter((member) => member.checkIn && member.checkIn.support === '3')
+        case '4':
+            return members.filter((member) => member.checkIn && member.checkIn.support === '4')
+        default:
+            return members
     }
 };
 

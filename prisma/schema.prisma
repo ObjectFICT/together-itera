@@ -39,8 +39,9 @@ model CheckInRecord {
   city                  String?
   isSafe                Boolean
   isAbleToWork          Boolean
-  isAbleToRelocate      Boolean
+  support               String?
   numberOfPeopleToRelocate Int?
+  otherSupport          String?
   comment               String?
   memberId              String          @Db.Uuid
   createdAt             DateTime?       @default(now())

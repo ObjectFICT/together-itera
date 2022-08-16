@@ -10,7 +10,7 @@ import {
   filterMembersByLastCheckInString,
   filterMembersByIsSafe,
   filterMembersByIsMobilized,
-  filterMembersByIsAbleToRelocate,
+  filterMembersBySupport,
   filterMembersByState,
   filterMembersByCanWork,
   filterMembersByIsExemptFromCheckIn,
@@ -41,7 +41,7 @@ export default function Employees({ members, teamId }: MembersProps) {
   const [filterIsSafe, setFilterIsSafe] = useState<BooleanPropString>('both');
   const [filterIsMobilized, setFilterIsMobilized] = useState<BooleanPropString>('both');
   const [filterCanWork, setFilterCanWork] = useState<BooleanPropString>('both');
-  const [filterAbleToRelocate, setFilterAbleToRelocate] = useState<BooleanPropString>('both');
+  const [filterSupport, setFilterSupport] = useState('');
   const [filterIsExemptFromCheckIn, setFilterIsExemptFromCheckIn] = useState<BooleanPropString>('both');
   const [filterByCheckIn, setFilterByCheckIn] = useState<CheckInString | ''>('');
   const [filteredMembers, setFilteredMembers] = useState<MemberDto[]>(members);
@@ -53,7 +53,7 @@ export default function Employees({ members, teamId }: MembersProps) {
     setFilterIsSafe('both');
     setFilterIsMobilized('both');
     setFilterCanWork('both');
-    setFilterAbleToRelocate('both');
+    setFilterSupport('');
     setFilterIsExemptFromCheckIn('both');
     setFilterByCheckIn('');
   };
@@ -101,8 +101,8 @@ export default function Employees({ members, teamId }: MembersProps) {
       filteredList = filterMembersByIsMobilized(filterIsMobilized, filteredList);
     }
 
-    if (filterAbleToRelocate) {
-      filteredList = filterMembersByIsAbleToRelocate(filterAbleToRelocate, filteredList);
+    if (filterSupport) {
+      filteredList = filterMembersBySupport(filterSupport, filteredList);
     }
 
     if (filterIsExemptFromCheckIn) {
@@ -123,7 +123,7 @@ export default function Employees({ members, teamId }: MembersProps) {
       filterIsSafe,
       filterCanWork,
       filterIsMobilized,
-      filterAbleToRelocate,
+      filterSupport,
       filterIsExemptFromCheckIn
     ]);
 
@@ -161,8 +161,8 @@ export default function Employees({ members, teamId }: MembersProps) {
     setFilterIsMobilized(isMobilized);
   };
 
-  const handleAbleToRelocateFilter = (isAbleToRelocate: BooleanPropString) => {
-    setFilterAbleToRelocate(isAbleToRelocate);
+  const handleSupportFilter = (support: string) => {
+    setFilterSupport(support);
   };
 
   const handleIsExemptFromCheckInFilter = (IsExemptFromCheckIn: BooleanPropString) => {
@@ -191,8 +191,8 @@ export default function Employees({ members, teamId }: MembersProps) {
         handleIsSafeFilter={handleIsSafeFilter}
         filterIsMobilized={filterIsMobilized}
         handleIsMobilizedFilter={handleIsMobilizedFilter}
-        filterAbleToRelocate={filterAbleToRelocate}
-        handleAbleToRelocateFilter={handleAbleToRelocateFilter}
+        filterSupport={filterSupport}
+        handleFilterSupport={handleSupportFilter}
         filterCanWork={filterCanWork}
         handleCanWorkFilter={handleCanWorkFilter}
         filterIsExemptFromCheckIn={filterIsExemptFromCheckIn}

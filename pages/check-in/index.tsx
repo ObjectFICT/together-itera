@@ -19,6 +19,8 @@ import {validateMemberCheckInToken} from '../../helpers/server';
 
 import type {Nullable} from '../../types';
 import {InvalidCheckInTokenError, MemberNotFoundError} from '../../exceptions';
+import {clearLine} from "readline";
+import {supportValues} from "../../components/Filters/Filters";
 
 interface CheckInProps {
     googleApiKey: Nullable<string>;
@@ -35,16 +37,17 @@ export default function CheckIn(props: CheckInProps) {
     const [geoDisabledByUser, setGeoDisabledByUser] = useState(false);
     const [isSafeValue, setIsSafeValue] = useState('');
     const [isAbleToWorkValue, setIsAbleToWorkValue] = useState('');
-    const [isAbleToRelocateValue, setIsAbleToRelocateValue] = useState('');
     const [safeError, setsafeError] = useState<boolean | string>(false);
     const [ableToWorkError, setAbleToWorkError] = useState<boolean | string>(
         false,
     );
-    const [ableToRelocateError, setAbleToRelocateError] = useState<boolean | string>(
+    const [supportError, setSupportError] = useState<boolean | string>(
         false,
     );
     const [numberOfPeopleToRelocateValue, setNumberOfPeopleToRelocateValue] = useState(0);
     const [commentValue, setCommentValue] = useState('');
+    const [otherSupportValue, setOtherSupportValue] = useState('');
+    const [supportValue, setSupportValue] = useState('');
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [globalError, setGlobalError] = useState('');
@@ -111,8 +114,12 @@ export default function CheckIn(props: CheckInProps) {
             setAbleToWorkError(errorMessage);
         }
 
-        if (!isAbleToRelocateValue.length) {
-            setIsAbleToRelocateValue(errorMessage);
+        if (!supportValue) {
+            setSupportError(errorMessage);
+        }
+
+        if (supportValue === '4' && !otherSupportValue) {
+            setSupportError(errorMessage);
         }
 
         if (isManualMode && !placeId) {
@@ -123,13 +130,14 @@ export default function CheckIn(props: CheckInProps) {
             return !Boolean(
                 !isSafeValue.length ||
                 !isAbleToWorkValue.length ||
-                !isAbleToRelocateValue.length ||
-                !placeId,
+                !supportValue.length ||
+                !placeId
             );
         } else {
             return !Boolean(!isSafeValue.length ||
-                    !isAbleToWorkValue.length) ||
-                !isAbleToRelocateValue;
+                !isAbleToWorkValue.length ||
+                !supportValue.length
+            );
         }
     }
 
@@ -146,8 +154,9 @@ export default function CheckIn(props: CheckInProps) {
                     longitude: coords?.longitude || null,
                     isSafe: isSafeValue === 'yes',
                     isAbleToWork: isAbleToWorkValue === 'yes',
-                    isAbleToRelocate: isAbleToRelocateValue === 'yes',
+                    support: supportValue,
                     numberOfPeopleToRelocate: numberOfPeopleToRelocateValue,
+                    otherSupport: otherSupportValue,
                     comment: commentValue,
                     placeId: placeId || null,
                 })
@@ -187,14 +196,20 @@ export default function CheckIn(props: CheckInProps) {
         setIsAbleToWorkValue(event.target.value);
     };
 
-    const isAbleToRelocateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setAbleToRelocateError(false);
-        setIsAbleToRelocateValue(event.target.value);
-    };
-
     const commentChange = (value: InputValueType) => {
         setCommentValue(value as string);
     };
+
+    const otherSupportChange = (value: InputValueType) => {
+        setSupportError(false)
+        setOtherSupportValue(value as string);
+    };
+
+    const supportChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setSupportError(false);
+        setSupportValue(event.target.value);
+    };
+
 
     const numberOfPeopleToRelocateChange = (value: InputValueType) => {
         setNumberOfPeopleToRelocateValue(value as number);
@@ -229,11 +244,19 @@ export default function CheckIn(props: CheckInProps) {
     }
 
     function setInputLabelForRelocate() {
-        return isAbleToRelocateValue === "no" ? 'How many relatives do you need to relocate with you?' : null;
+        return supportValue === "3" ? 'Indicate the number of members of the family with whom you plan to relocate (first-degree relatives: parents (including step-mother, step-father), sisters/brothers, children)' : null;
     }
 
     function setInputTypeForRelocate() {
-        return isAbleToRelocateValue === "no" ? "number" : "hidden";
+        return supportValue === "3" ? "number" : "hidden";
+    }
+
+    function setInputLabelForOtherSupport() {
+        return supportValue === "4" ? 'How can we help you?' : null;
+    }
+
+    function setInputTypeForOtherSupport() {
+        return supportValue === "4" ? "text" : "hidden";
     }
 
     return (
@@ -374,18 +397,20 @@ export default function CheckIn(props: CheckInProps) {
                     {/*new block*/}
                     <FormRow>
                         <Select
-                            error={ableToRelocateError}
-                            name='ableRelocate'
-                            label='Can you relocate to a safe place by yourself in a dangerous situation in your region?'
-                            value={isAbleToRelocateValue}
+                            error={supportError}
+                            name='support'
+                            label='What support do you expect from the company?'
+                            value={supportValue}
                             selected=''
-                            onChange={isAbleToRelocateChange}
+                            onChange={supportChange}
                         >
                             <option disabled value=''>
                                 Select
                             </option>
-                            <option value='yes'>Yes</option>
-                            <option value='no'>No</option>
+                            <option value='1'>{supportValues[0]}</option>
+                            <option value='2'>{supportValues[1]}</option>
+                            <option value='3'>{supportValues[2]}</option>
+                            <option value='4'>{supportValues[3]}</option>
                         </Select>
                     </FormRow>
                     <FormRow>
@@ -396,6 +421,19 @@ export default function CheckIn(props: CheckInProps) {
                             onChange={numberOfPeopleToRelocateChange}
                             name='numberOfPeopleToRelocate'
                             label={setInputLabelForRelocate()}
+                        />
+                    </FormRow>
+                    <FormRow>
+                        <Input
+                            error={supportValue === '5' ? supportError : null}
+                            type={setInputTypeForOtherSupport()}
+                            value={otherSupportValue}
+                            onChange={otherSupportChange}
+                            multiline={supportValue === '4'}
+                            rows={5}
+                            name='otherSupport'
+                            label={setInputLabelForOtherSupport()}
+                            placeholder='Please, write your text!'
                         />
                     </FormRow>
                     <FormRow>
